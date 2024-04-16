@@ -1,44 +1,24 @@
-let cats = [];
+var cats = ["Fluffy", "Snowy"]
 
-// Create a new cat
-function createCat(req, res) {
-  const { id, name } = req.params;
-  const newCat = { id: parseInt(id), name };
-  cats.push(newCat);
-  res.status(201).json(newCat);
+exports.create = (req, res)=>{
+    const {name} = req.body
+    cats.push(name)
+    res.send(`added cat:${name}`);
 }
 
-// Read all cats
-function readCats(req, res) {
-  res.json(cats);
+exports.read = (req, res)=>{
+    res.send(`cat name: ${cats}`)
 }
 
-// Update a cat by ID
-function updateCat(req, res) {
-  const { id } = req.params;
-  const { name } = req.params;
-  const catIndex = cats.findIndex(cat => cat.id === parseInt(id));
-  if (catIndex === -1) {
-    return res.status(404).json({ message: "Cat not found" });
-  }
-  cats[catIndex].name = name;
-  res.json(cats[catIndex]);
+exports.update = (req,res)=>{
+    const {id} = req.params
+    const {name} = req.body
+    cats[id] = name
+    res.send(`cat names:${cats}`) 
 }
 
-// Delete a cat by ID
-function deleteCat(req, res) {
-  const { id } = req.params;
-  const catIndex = cats.findIndex(cat => cat.id === parseInt(id));
-  if (catIndex === -1) {
-    return res.status(404).json({ message: "Cat not found" });
-  }
-  cats.splice(catIndex, 1);
-  res.sendStatus(204);
+exports.delete = (req, res)=>{
+    const {id} = req.params
+    cats.splice(id,1)
+    res.send(`cat names:${cats}`)
 }
-
-module.exports = {
-  createCat,
-  readCats,
-  updateCat,
-  deleteCat
-};
